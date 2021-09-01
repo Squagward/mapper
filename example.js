@@ -5,7 +5,6 @@ import { mapField, mapMethod, m, f } from "./index";
 // m & f return the value of the field/method applied to the object
 
 const displayWidthName = mapField(Client.getMinecraft(), "displayWidth");
-Client.getMinecraft().field_71443_c;
 
 const actualDisplayWidth = f("displayWidth")(Client.getMinecraft());
 
