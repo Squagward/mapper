@@ -5,7 +5,9 @@ const fields = JSON.parse(FileLib.read("mapper", "fields.json"));
 const methods = JSON.parse(FileLib.read("mapper", "methods.json"));
 
 const finder = (object, name, type) => {
-  if (!!object[name]) return name;
+  try {
+    if (!!object[name]) return name;
+  } catch (err) {}
   const arr = type === "field" ? fields : methods;
   return arr[name]?.find((v) => !!object[v]);
 };
