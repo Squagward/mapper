@@ -1,8 +1,8 @@
 {
   "name": "mapper",
   "creator": "Squagward",
-  "description": "Allows for mappings of readable fields and methods to their correct obfuscated pair. Check out the examples in example.js for more info",
-  "version": "2.1.2",
+  "description": "Allows for mappings of readable fields and methods to their correct obfuscated pair. Check out the examples in README.md for more info",
+  "version": "2.2.0",
   "$schema": "../CTAutocomplete/schema.json",
-  "changelog": "fixed massive error 2.1.1 introduced"
+  "changelog": "Fixed overloaded methods from only returning the first instance, Replaced examples.js with README.md"
 }
