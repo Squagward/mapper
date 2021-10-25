@@ -1,5 +1,5 @@
 ```js
-import { mapField, mapMethod, m, f } from "./index";
+import { mapField, mapMethod, m, f } from "../mapper";
 ```
 
 mapField & mapMethod only return the mapped names, while
