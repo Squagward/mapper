@@ -34,7 +34,15 @@ export const mapMethod = (object, method) => {
   if (!(method in methods)) {
     throw new Error(`mapper: Method ${method} not found in methods.json`);
   }
-  const mapped = methods[method].filter((v) => !!object?.[v]);
+  const mapped = methods[method].filter((v) => {
+    try {
+      !!object[v];
+      return true;
+    } catch (err) {
+      return false;
+    }
+  });
+
   if (mapped.length > 0) return mapped;
   throw new Error(
     `mapper: No deobfuscated field ${method} for class ${object.class.getName()} found`
