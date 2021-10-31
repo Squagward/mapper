@@ -15,7 +15,14 @@ export const mapField = (object, field) => {
   if (!(field in fields)) {
     throw new Error(`mapper: Field ${field} not found in fields.json`);
   }
-  const mapped = fields[field].find((v) => !!object[v]);
+  const mapped = fields[field].find((v) => {
+    try {
+      !!object[v];
+      return true;
+    } catch (err) {
+      return false;
+    }
+  });
   if (mapped) return mapped;
   throw new Error(
     `mapper: No deobfuscated field ${field} for class ${object.class.getName()} found`

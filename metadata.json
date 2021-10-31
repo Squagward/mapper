@@ -2,7 +2,7 @@
   "name": "mapper",
   "creator": "Squagward",
   "description": "Allows for mappings of readable fields and methods to their correct obfuscated pair. Check out the examples in README.md for more info",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "$schema": "../CTAutocomplete/schema.json",
-  "changelog": "Fixed mapMethod from erroring. Hopefully last update"
+  "changelog": "Fixed mapField from erroring because I'm an idiot. Hopefully actual last update"
 }
