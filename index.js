@@ -16,13 +16,9 @@ export const mapField = (object, field) => {
     throw new Error(`mapper: Field ${field} not found in fields.json`);
   }
   const mapped = fields[field].find((v) => {
-    try {
-      !!object[v];
-      return true;
-    } catch (err) {
-      return false;
-    }
+    return v in object;
   });
+
   if (mapped) return mapped;
   throw new Error(
     `mapper: No deobfuscated field ${field} for class ${object.class.getName()} found`
@@ -42,12 +38,7 @@ export const mapMethod = (object, method) => {
     throw new Error(`mapper: Method ${method} not found in methods.json`);
   }
   const mapped = methods[method].filter((v) => {
-    try {
-      !!object[v];
-      return true;
-    } catch (err) {
-      return false;
-    }
+    return v in object;
   });
 
   if (mapped.length > 0) return mapped;
