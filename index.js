@@ -12,14 +12,16 @@ const methods = JSON.parse(FileLib.read("mapper", "methods.json"));
  * @returns {string} the name of the mapped field
  */
 export const mapField = (object, field) => {
+  if (field in object) return field;
+
   if (!(field in fields)) {
     throw new Error(`mapper: Field ${field} not found in fields.json`);
   }
-  const mapped = fields[field].find((v) => {
-    return v in object;
-  });
+
+  const mapped = fields[field].find((v) => v in object);
 
   if (mapped) return mapped;
+
   throw new Error(
     `mapper: No deobfuscated field ${field} for class ${object.class.getName()} found`
   );
@@ -34,14 +36,16 @@ export const mapField = (object, field) => {
  * due to method overloads having different obfuscated names)
  */
 export const mapMethod = (object, method) => {
+  if (method in object) return [method];
+
   if (!(method in methods)) {
     throw new Error(`mapper: Method ${method} not found in methods.json`);
   }
-  const mapped = methods[method].filter((v) => {
-    return v in object;
-  });
+
+  const mapped = methods[method].filter((v) => v in object);
 
   if (mapped.length > 0) return mapped;
+
   throw new Error(
     `mapper: No deobfuscated field ${method} for class ${object.class.getName()} found`
   );
