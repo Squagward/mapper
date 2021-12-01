@@ -4,6 +4,13 @@
 const fields = JSON.parse(FileLib.read("mapper", "fields.json"));
 const methods = JSON.parse(FileLib.read("mapper", "methods.json"));
 
+class MapperError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = "MapperError";
+  }
+}
+
 /**
  * @param {JavaTClass<T>} object the Java object, of which to find the mapped field name
  * @param {string} field the MCP field name
@@ -15,16 +22,26 @@ export const mapField = (object, field) => {
   if (field in object) return field;
 
   if (!(field in fields)) {
-    throw new Error(`mapper: Field ${field} not found in fields.json`);
+    throw new MapperError(`Field ${field} not found in fields.json`);
   }
 
   const mapped = fields[field].find((v) => v in object);
 
   if (mapped) return mapped;
 
-  throw new Error(
-    `mapper: No deobfuscated field ${field} for class ${object.class.getName()} found`
+  throw new MapperError(
+    `No deobfuscated field ${field} for class ${object.class.getName()} found`
   );
+};
+
+/**
+ * @param {JavaTClass<T>} object the Java object, of which to set the mapped field
+ * @param {string} field the MCP field name
+ * @param {*} value the new value of the object's field
+ */
+export const setField = (object, field, value) => {
+  const mapped = mapField(object, field);
+  object[mapped] = value;
 };
 
 /**
@@ -39,15 +56,15 @@ export const mapMethod = (object, method) => {
   if (method in object) return [method];
 
   if (!(method in methods)) {
-    throw new Error(`mapper: Method ${method} not found in methods.json`);
+    throw new MapperError(`Method ${method} not found in methods.json`);
   }
 
   const mapped = methods[method].filter((v) => v in object);
 
   if (mapped.length > 0) return mapped;
 
-  throw new Error(
-    `mapper: No deobfuscated field ${method} for class ${object.class.getName()} found`
+  throw new MapperError(
+    `No deobfuscated field ${method} for class ${object.class.getName()} found`
   );
 };
 
