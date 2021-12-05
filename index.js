@@ -11,6 +11,18 @@ class MapperError extends Error {
   }
 }
 
+const safeFilter = (object) => {
+  return (v) => {
+    try {
+      return v in object;
+    } catch (e) {}
+    try {
+      return !!object[v];
+    } catch (e) {}
+    return false;
+  };
+};
+
 /**
  * @param {JavaTClass<T>} object the Java object, of which to find the mapped field name
  * @param {string} field the MCP field name
@@ -19,13 +31,18 @@ class MapperError extends Error {
  * @returns {string} the name of the mapped field
  */
 export const mapField = (object, field) => {
-  if (field in object) return field;
+  try {
+    if (field in object) return field;
+  } catch (e) {}
+  try {
+    if (!!object[field]) return field;
+  } catch (e) {}
 
   if (!(field in fields)) {
     throw new MapperError(`Field ${field} not found in fields.json`);
   }
 
-  const mapped = fields[field].find((v) => v in object);
+  const mapped = fields[field].find(safeFilter(object));
 
   if (mapped) return mapped;
 
@@ -53,13 +70,18 @@ export const setField = (object, field, value) => {
  * due to method overloads having different obfuscated names)
  */
 export const mapMethod = (object, method) => {
-  if (method in object) return [method];
+  try {
+    if (method in object) return [method];
+  } catch (e) {}
+  try {
+    if (!!object[method]) return [method];
+  } catch (e) {}
 
   if (!(method in methods)) {
     throw new MapperError(`Method ${method} not found in methods.json`);
   }
 
-  const mapped = methods[method].filter((v) => v in object);
+  const mapped = methods[method].filter(safeFilter(object));
 
   if (mapped.length > 0) return mapped;
 
